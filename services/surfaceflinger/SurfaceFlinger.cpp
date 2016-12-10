@@ -1952,6 +1952,12 @@ void SurfaceFlinger::invalidateHwcGeometry()
 void SurfaceFlinger::doDisplayComposition(const sp<const DisplayDevice>& hw,
         const Region& inDirtyRegion)
 {
+#ifdef MTK_HARDWARE
+    if (hw->getDisplayType() != HWC_DISPLAY_PRIMARY && inDirtyRegion.isEmpty()) {
+        return;
+    }
+#endif
+
     Region dirtyRegion(inDirtyRegion);
 
     // compute the invalid region
